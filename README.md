@@ -5,9 +5,9 @@ It manipulates the Order-UI of the plentyMarkets System for better usability.
 It only works with the `CompactView`-Mode
 
 ## Setup
-Install Tempermonkey in Chrome
-Install Script
-Maybe adjust the match to `https://*.plentymarkets-cloud-de.com/*`
+- Install Tempermonkey in Chrome
+- Install Script
+- Maybe adjust the match to `https://*.plentymarkets-cloud-de.com/*`
 
 ## Features
 - change font-weight of "AUFTRAGSWERT" infobox

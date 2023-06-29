@@ -1,12 +1,3 @@
-// ==UserScript==
-// @name         plenty: Order UI CSS
-// @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
-// @author       You
-// @match        https://*.plentymarkets-cloud-de.com/plenty/terra/order/order-ui/overview
-// @grant        GM_addStyle
-// ==/UserScript==
 
 function addGlobalStyle(css) {
     var head, style;
@@ -16,6 +7,12 @@ function addGlobalStyle(css) {
     style.type = 'text/css';
     style.innerHTML = css.replace(/;/g, ' !important;');
     head.appendChild(style);
+}
+
+function orderInvoiceAddressFirstLineBold() {
+    document.querySelectorAll('terra-order-ui-order-address-readonly').forEach((elem) => {
+        elem.querySelectorAll('.infobox-text')[0].style.fontWeight = 900;
+    });
 }
 
 function calculateBrightness(color) {
@@ -35,18 +32,16 @@ function calculateBrightness(color) {
     return brightness;
 }
 
-function makeCertainBoxesBold()
-{
+function makeCertainBoxesBold() {
     const titles = document.getElementsByTagName('mat-grid-tile');
     // Loop through the <toolbar> elements
     for (let i = 0; i < titles.length; i++) {
         const box = titles[i];
-        if (box.innerText.includes('AUFTRAGSWERT'))
-        {
+        if (box.innerText.includes('AUFTRAGSWERT')) {
             box.classList.add('is_bold_text')
         }
-    } 
-     
+    }
+
 
 }
 
@@ -97,7 +92,7 @@ function updateStatusColors() {
 }
 
 
-(function() {
+(function () {
     'use strict';
 
     // Spacingt between order boxes
@@ -117,12 +112,22 @@ function updateStatusColors() {
 
     addGlobalStyle('.is_bold_text { font-weight: bold; }')
 
+    addGlobalStyle('* {    \
+                    --space-md-fix: 15px;   \
+                    --space-sm-fix: 7px;    \
+    }');
+
+
     setInterval(() => {
 
         updateToolbarColors();
         makeCertainBoxesBold();
-       // updateStatusColors();
+        orderInvoiceAddressFirstLineBold();
+        // updateStatusColors();
 
-    }, 500);
+    }, 1000);
+
+
+
 
 })();
