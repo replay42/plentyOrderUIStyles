@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         plenty: Order UI CSS
 // @namespace    biokinder
-// @version      0.31
+// @version      0.32
 // @description  Modifies new ORderUI in Plentymarkets Backend to fit our needs
 // @author       RbnSwr @biokinder
 // @match        https://*.plentymarkets-cloud-de.com/plenty/terra/order/order-ui/overview
@@ -101,10 +101,6 @@ function updateStatusColors() {
 
 (function() {
     'use strict';
-
-    // only apply on orderUi
-    if (document.querySelector('terra-order-ui') === null) return;
-
     // Spacingt between order boxes
     addGlobalStyle('.compact-view-order-row {   \
                         margin: 0 0 20px;       \
