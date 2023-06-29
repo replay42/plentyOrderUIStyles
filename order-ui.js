@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         plenty: Order UI CSS
-// @namespace    http://tampermonkey.net/
-// @version      0.2
-// @description  try to take over the world!
-// @author       You
+// @namespace    biokinder
+// @version      0.3
+// @description  Modifies new ORderUI in Plentymarkets Backend to fit our needs
+// @author       RbnSwr @biokinder
 // @match        https://*.plentymarkets-cloud-de.com/plenty/terra/order/order-ui/overview
-// @downloadURL https://raw.githubusercontent.com/replay42/plentyOrderUIStyles/main/order-ui.js
-// @updateURL https://raw.githubusercontent.com/replay42/plentyOrderUIStyles/main/order-ui.js
+// @downloadURL  https://raw.githubusercontent.com/replay42/plentyOrderUIStyles/main/order-ui.js
+// @updateURL    https://raw.githubusercontent.com/replay42/plentyOrderUIStyles/main/order-ui.js
 // @grant        GM_addStyle
 // ==/UserScript==
 
@@ -116,6 +116,12 @@ function updateStatusColors() {
     addGlobalStyle('mat-toolbar.credit      {     background: #fbd76a; }')
     addGlobalStyle('mat-toolbar.return      {     background: #cdb39e; }')
     addGlobalStyle('mat-toolbar.warranty    {     background: #b1e4a5; }')
+
+    // Spacing of Boxes
+    addGlobalStyle('* {    \
+                    --space-md-fix: 15px;   \
+                    --space-sm-fix: 7px;    \
+    }');
 
     addGlobalStyle('.is_bold_text { font-weight: bold; }')
 
