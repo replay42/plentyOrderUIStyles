@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         plenty: Order UI CSS
 // @namespace    biokinder
-// @version      0.32
+// @version      0.321
 // @description  Modifies new ORderUI in Plentymarkets Backend to fit our needs
 // @author       RbnSwr @biokinder
 // @match        https://*.plentymarkets-cloud-de.com/plenty/terra/order/order-ui/overview
@@ -79,22 +79,28 @@ function updateToolbarColors() {
 
 function updateStatusColors() {
     // Get all elements with the class "terra-order-ui-order-status-readonly"
-    const elements = document.querySelectorAll('terra-order-ui-order-status-readonly');
-    // Iterate over each element and set the background color dynamically
-    elements.forEach(element => {
-        const color = getComputedStyle(element.querySelector('mat-icon')).color;
+    // Get all the outer elements
+    const outerElements = document.querySelectorAll('terra-order-ui-order-status-readonly');
 
-        const brightness = calculateBrightness(color);
+    // Loop through each outer element
+    outerElements.forEach((element) => {
+        // Get the first <div> element inside the outer element
+        const firstDiv = element.querySelector('div');
+        const matIcon = firstDiv.querySelector('.mat-icon');
+        matIcon.style.display = 'none';
+        const bgColor = matIcon.getAttribute('style').match(/color: (.*?);/)[1];
 
+        const brightness = calculateBrightness(bgColor);
         // Set the text color based on brightness
+        let color = '#fff';
         if (brightness > 128) {
-            element.style.color = '#000'; // Dark text color for light background
-        } else {
-            element.style.color = '#fff'; // Light text color for dark background
+            let color = '#000'; // Dark text color for light background
         }
 
-        element.style.backgroundColor = color;
-        element.style.display = 'block';
+        // Set the background color of the first <div> element
+        firstDiv.style.backgroundColor = bgColor;
+        firstDiv.style.color = color;
+        firstDiv.style.padding = '1px 5px';
     });
 }
 
@@ -128,8 +134,8 @@ function updateStatusColors() {
 
         updateToolbarColors();
         makeCertainBoxesBold();
-       // updateStatusColors();
+        updateStatusColors();
 
-    }, 500);
+    }, 1000);
 
 })();
