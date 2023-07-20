@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         plenty: Order UI CSS
 // @namespace    biokinder
-// @version      0.321
+// @version      0.4
 // @description  Modifies new ORderUI in Plentymarkets Backend to fit our needs
 // @author       RbnSwr @biokinder
 // @match        https://*.plentymarkets-cloud-de.com/plenty/terra/order/order-ui/overview
@@ -37,18 +37,16 @@ function calculateBrightness(color) {
     return brightness;
 }
 
-function makeCertainBoxesBold()
-{
+function makeCertainBoxesBold() {
     const titles = document.getElementsByTagName('mat-grid-tile');
     // Loop through the <toolbar> elements
     for (let i = 0; i < titles.length; i++) {
         const box = titles[i];
-        if (box.innerText.includes('AUFTRAGSWERT'))
-        {
+        if (box.innerText.includes('AUFTRAGSWERT')) {
             box.classList.add('is_bold_text')
         }
-    } 
-     
+    }
+
 
 }
 
@@ -63,15 +61,19 @@ function updateToolbarColors() {
         if (anchor === null) continue;
 
         // Check if the content of the <a> element contains the desired text
+        toolbar.classList.remove('preorder');
         if (anchor.innerText.includes('Vorbestellung'))
             toolbar.classList.add('preorder');
 
+        toolbar.classList.remove('credit');
         if (anchor.innerText.includes('Gutschrift'))
             toolbar.classList.add('credit');
 
+        toolbar.classList.remove('return');
         if (anchor.innerText.includes('Retoure'))
             toolbar.classList.add('return');
 
+        toolbar.classList.remove('warranty');
         if (anchor.innerText.includes('Gewährleistung'))
             toolbar.classList.add('warranty');
     }
