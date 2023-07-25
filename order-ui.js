@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         plenty: Order UI CSS
 // @namespace    biokinder
-// @version      0.4
+// @version      0.4.1
 // @description  Modifies new ORderUI in Plentymarkets Backend to fit our needs
 // @author       RbnSwr @biokinder
 // @match        https://*.plentymarkets-cloud-de.com/plenty/terra/order/order-ui/overview
@@ -20,20 +20,21 @@ function addGlobalStyle(css) {
     head.appendChild(style);
 }
 
-function calculateBrightness(color) {
-    // Extract the RGB values from the color string
-    const rgb = color.match(/\d+/g);
-    const red = parseInt(rgb[0]);
-    const green = parseInt(rgb[1]);
-    const blue = parseInt(rgb[2]);
+function calculateBrightness(rgbColor) {
+    // Parse the RGB values from the input color string
+    const match = rgbColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    if (!match) {
+        return 0;
+    }
 
-    // Calculate the brightness using the formula
-    const brightness = Math.sqrt(
-        (red * red * 0.299) +
-        (green * green * 0.587) +
-        (blue * blue * 0.114)
-    );
+    const red = parseInt(match[1], 10);
+    const green = parseInt(match[2], 10);
+    const blue = parseInt(match[3], 10);
 
+    // Calculate the brightness level using the formula (0.299 * R + 0.587 * G + 0.114 * B)
+    const brightness = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
+
+    // Return the brightness level (a value between 0 and 1)
     return brightness;
 }
 
@@ -42,8 +43,9 @@ function makeCertainBoxesBold() {
     // Loop through the <toolbar> elements
     for (let i = 0; i < titles.length; i++) {
         const box = titles[i];
-        if (box.innerText.includes('AUFTRAGSWERT')) {
+        if (box.innerText.includes('Auftragswert')) {
             box.classList.add('is_bold_text')
+            box.querySelector('.text-nowrap .infobox-text').style.fontSize = '110%';
         }
     }
 
@@ -89,25 +91,33 @@ function updateStatusColors() {
         // Get the first <div> element inside the outer element
         const firstDiv = element.querySelector('div');
         const matIcon = firstDiv.querySelector('.mat-icon');
+        const matgridtilecontent = element.closest('.mat-grid-tile-content');
+
         matIcon.style.display = 'none';
         const bgColor = matIcon.getAttribute('style').match(/color: (.*?);/)[1];
 
         const brightness = calculateBrightness(bgColor);
         // Set the text color based on brightness
-        let color = '#fff';
-        if (brightness > 128) {
-            let color = '#000'; // Dark text color for light background
+        let color = '#000';
+        if (brightness < 0.45) {
+            color = '#fff'; // Dark text color for light background
         }
 
         // Set the background color of the first <div> element
         firstDiv.style.backgroundColor = bgColor;
         firstDiv.style.color = color;
-        firstDiv.style.padding = '1px 5px';
+        firstDiv.style.padding = '1px 10px';
+        firstDiv.style.margin = '0 0 5px 0px';
+        firstDiv.style.borderRadius = '5px';
+        firstDiv.style.bottom = '5px';
+
+        matgridtilecontent.flexFlow = 'column';
+
     });
 }
 
 
-(function() {
+(function () {
     'use strict';
     // Spacingt between order boxes
     addGlobalStyle('.compact-view-order-row {   \
