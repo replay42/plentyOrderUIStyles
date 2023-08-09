@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         plenty: Order UI CSS
 // @namespace    biokinder
-// @version      0.4.1
+// @version      0.5
 // @description  Modifies new ORderUI in Plentymarkets Backend to fit our needs
 // @author       RbnSwr @biokinder
 // @match        https://*.plentymarkets-cloud-de.com/plenty/terra/order/order-ui/overview
@@ -48,8 +48,35 @@ function makeCertainBoxesBold() {
             box.querySelector('.text-nowrap .infobox-text').style.fontSize = '110%';
         }
     }
+}
 
 
+function highlightSuisse() {
+    const titles = document.getElementsByClassName('mat-grid-tile-content');
+    // Loop through the <toolbar> elements
+    for (let i = 0; i < titles.length; i++) {
+        const box = titles[i];
+        if (box.innerText.includes('Schweiz') && box.querySelector('.suisseFlag') === null) {
+            let suisse = box.querySelector('.info-box-data-container div:nth-child(2) div');
+            const newElement = document.createElement('div');
+
+            // Set content and styles
+            newElement.textContent = '+';
+            newElement.style.background = 'red';
+            newElement.style.width = '20px';
+            newElement.style.height = '15px';
+            newElement.style.color = '#ffff';
+            newElement.style.display = 'inline-block';
+            newElement.style.textAlign = 'center';
+            newElement.style.lineHeight = '14px';
+            newElement.style.fontWeight = 'bold';
+            newElement.classList.add('suisseFlag');
+
+            // Append the new element to the suisse element
+            suisse.insertBefore(newElement, suisse.firstChild);
+
+        }
+    }
 }
 
 function updateToolbarColors() {
@@ -147,6 +174,7 @@ function updateStatusColors() {
         updateToolbarColors();
         makeCertainBoxesBold();
         updateStatusColors();
+        highlightSuisse();
 
     }, 1000);
 
